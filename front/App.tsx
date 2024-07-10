@@ -26,7 +26,7 @@ function App(): JSX.Element {
   };
   return (
     <NavigationContainer>
-      <AuthStackNavigator />
+    <AuthStackNavigator />
     </NavigationContainer>
   );
 }
