@@ -4,10 +4,12 @@ import CustomButton from '../../components/CustomButton';
 import InputField from '../../components/InputField';
 import useForm from '../../src/hooks/useForm';
 import {validateSignup} from '../../utils/validate';
+import useAuth from '../../src/hooks/queries/useAuth';
 
 function SignUpScreen() {
   const passwordRef = useRef<TextInput | null>(null);
   const passwordConfirmRef = useRef<TextInput | null>(null);
+  const {signupMutation, loginMutation} = useAuth();
   const signUp = useForm({
     initialValue: {email: '', password: '', passwordConfirm: ''},
     validate: validateSignup,
@@ -15,6 +17,14 @@ function SignUpScreen() {
 
   const handleSubmit = () => {
     console.log(signUp.values);
+
+    const {email, password} = signUp.values;
+
+    signupMutation.mutate({email, password}, {
+      onSuccess(data, variables, context) {
+        loginMutation.mutate({email, password});
+      },
+    });
   };
 
   return (
